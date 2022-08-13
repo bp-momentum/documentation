@@ -1,0 +1,52 @@
+version: '3.1'
+
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    restart: unless-stopped
+    container_name: momentum-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+
+  momentum-db:
+    image: postgres
+    restart: unless-stopped
+    container_name: momentum-db
+    environment:
+      POSTGRES_USER: momentum
+      POSTGRES_PASSWORD: momentum # this should be changed for security reasons
+      POSTGRES_DB: momentum
+
+  momentum-backend:
+    image: ghcr.io/bp-momentum/backend:latest
+    restart: unless-stopped
+    container_name: momentum-backend
+    depends_on:
+      - momentum-db
+    environment:
+      EMAIL_ADDRESS: test@example.com
+      EMAIL_PASSWORD: test
+      EMAIL_HOST: smtp.example.com
+      DATABASE_NAME: momentum
+      DATABASE_USER: momentum
+      DATABASE_PASSWORD: momentum
+      DATABASE_HOST: momentum-db  # this needs to be the container name of the db
+      DATABASE_PORT: 5432
+      VIDEO_PATH: videos
+      ALLOWED_ORIGINS: http://frontend.local  # CORS (urls that the frontend uses as a referer (frontend urls))
+      ALLOWED_HOSTS: 127.0.0.1,localhost,backend.local  # Hosts that the backend answers to (backend urls)
+      VIRTUAL_HOST: backend.local  # used for the nginx-proxy
+
+  momentum-frontend:
+    image: ghcr.io/bp-momentum/frontend:latest
+    restart: unless-stopped
+    container_name: momentum-frontend
+    depends_on:
+      - momentum-backend
+    environment:
+      BACKEND_URL: http://backend.local
+      WEBSOCKET_URL: ws://backend.local
+      FRONTEND_URL: http://frontend.local/#/
+      VIRTUAL_HOST: frontend.local  # used for the nginx-proxy
