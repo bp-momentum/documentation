@@ -22,36 +22,4 @@ Both are distributed as Docker images.
 
 For deployment environments, we strongly recommend an external PostgreSQL database to be used with the backend.
 
-In the folder [`compose`]() you can find some example configurations.
-
-## Example Test Environment
-
-```yml
-version: '3.1'
-
-services:
-  momentum-backend:
-    image: ghcr.io/bp-momentum/backend:latest
-    restart: unless-stopped
-    ports:
-      - 8000:8000
-    environment:
-      EMAIL_ADDRESS: test@example.com
-      EMAIL_PASSWORD: test
-      EMAIL_HOST: smtp.example.com
-      DATABASE_USE_POSTGRESQL: "false"
-      VIDEO_PATH: videos
-      ALLOWED_ORIGINS: http://localhost
-      ALLOWED_HOSTS: 127.0.0.1,localhost
-      WEBSITE_URL: localhost:8080
-
-  momentum-frontend:
-    image: ghcr.io/bp-momentum/frontend:latest
-    restart: unless-stopped
-    ports:
-      - 443:443  # this needs to be https for camera access
-    depends_on:
-      - momentum-backend
-    environment:
-      # TODO
-```
+In the folder [`compose`](compose) you can find some example configurations.
