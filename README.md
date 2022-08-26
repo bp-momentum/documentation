@@ -17,8 +17,10 @@ By assigning a plan of exercises to a patient, the patient can execute these exe
 
 ## Running the app
 
-To run Momentum, you need at least the frontend and the backend.
-Both are distributed as Docker images.
+To run Momentum, you need at least the frontend, the backend and an AI server.
+All are distributed as Docker images.
+
+Frontend and Backend need to be publicly accessible. The AI server needs to be accessed only from the backend.
 
 For deployment environments, we strongly recommend an external PostgreSQL database to be used with the backend.
 

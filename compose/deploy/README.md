@@ -25,5 +25,8 @@ Backend:
 Database:
   - POSTGRES_PASSWORD
 
+Nginx-Proxy:
+  - DEFAULT_HOST
+
 For the nginx-proxy you will need to supply a valid SSL certificate.
 To do so please refer to the [documentation](https://github.com/nginx-proxy/nginx-proxy#ssl-support) of the nginx-proxy.

@@ -1,18 +1,26 @@
 version: '3.1'
 
 services:
+  momentum-ai:
+    image: ghcr.io/bp-momentum/ai:latest
+    restart: unless-stopped
+    container_name: momentum-ai
+
   momentum-backend:
     image: ghcr.io/bp-momentum/backend:latest
     restart: unless-stopped
     container_name: momentum-backend
+    depends_on:
+      - momentum-ai
     environment:
       EMAIL_ADDRESS: test@example.com
       EMAIL_PASSWORD: test
       EMAIL_HOST: smtp.example.com
       DATABASE_USE_POSTGRESQL: false
       VIDEO_PATH: videos
-      ALLOWED_ORIGINS: http://localhost:8080  # CORS (urls that the frontend uses as a referer (frontend urls))
+      ALLOWED_ORIGINS: http://localhost:8082  # CORS (urls that the frontend uses as a referer (frontend urls))
       ALLOWED_HOSTS: 127.0.0.1,localhost,backend.local  # Hosts that the backend answers to (backend urls)
+      AI_URL: http://momentum-ai
     ports:
       - "8081:80"
 
@@ -25,6 +33,6 @@ services:
     environment:
       BACKEND_URL: http://localhost:8081
       WEBSOCKET_URL: ws://localhost:8081
-      FRONTEND_URL: http://localhost:8080/#/
+      FRONTEND_URL: http://localhost:8082/#/
     ports:
-      - "8080:80"
+      - "8082:80"

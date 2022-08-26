@@ -9,20 +9,30 @@ services:
       - "80:80"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
+    environment:
+      - DEFAULT_HOST=frontend.local
+
+  momentum-ai:
+    image: ghcr.io/bp-momentum/ai:latest
+    restart: unless-stopped
+    container_name: momentum-ai
 
   momentum-backend:
     image: ghcr.io/bp-momentum/backend:latest
     restart: unless-stopped
     container_name: momentum-backend
+    depends_on:
+      - momentum-ai
     environment:
       EMAIL_ADDRESS: test@example.com
       EMAIL_PASSWORD: test
       EMAIL_HOST: smtp.example.com
       DATABASE_USE_POSTGRESQL: false
       VIDEO_PATH: videos
-      ALLOWED_ORIGINS: http://frontend.local  # CORS (urls that the frontend uses as a referer (frontend urls))
+      ALLOWED_ORIGINS: http://frontend.local,http://localhost  # CORS (urls that the frontend uses as a referer (frontend urls))
       ALLOWED_HOSTS: 127.0.0.1,localhost,backend.local  # Hosts that the backend answers to (backend urls)
       VIRTUAL_HOST: backend.local  # used for the nginx-proxy
+      AI_URL: http://momentum-ai
 
   momentum-frontend:
     image: ghcr.io/bp-momentum/frontend:latest
