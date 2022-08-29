@@ -47,6 +47,8 @@ services:
       ALLOWED_HOSTS: 127.0.0.1,localhost,backend.local  # Hosts that the backend answers to (backend urls)
       VIRTUAL_HOST: backend.local  # used for the nginx-proxy
       AI_URL: http://momentum-ai
+    volumes:
+      - ./exercise.json:/app/exercise.json
 
   momentum-frontend:
     image: ghcr.io/bp-momentum/frontend:latest
