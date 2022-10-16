@@ -48,7 +48,7 @@ services:
       VIRTUAL_HOST: backend.local  # used for the nginx-proxy
       AI_URL: http://momentum-ai
     volumes:
-      - ./exercise.json:/app/exercise.json
+      - ./exercise.json:/app/exercises.json
 
   momentum-frontend:
     image: ghcr.io/bp-momentum/frontend:latest
