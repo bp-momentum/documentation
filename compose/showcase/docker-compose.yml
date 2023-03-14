@@ -45,3 +45,4 @@ services:
       WEBSOCKET_URL: ws://backend.local
       FRONTEND_URL: http://frontend.local/#/
       VIRTUAL_HOST: frontend.local  # used for the nginx-proxy
+      DEBUG: true

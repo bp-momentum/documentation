@@ -16,13 +16,15 @@ services:
       EMAIL_ADDRESS: test@example.com
       EMAIL_PASSWORD: test
       EMAIL_HOST: smtp.example.com
-      DATABASE_USE_POSTGRESQL: false
+      DATABASE_USE_POSTGRESQL: "false"
       VIDEO_PATH: videos
       ALLOWED_ORIGINS: http://localhost:8082  # CORS (urls that the frontend uses as a referer (frontend urls))
       ALLOWED_HOSTS: 127.0.0.1,localhost,backend.local  # Hosts that the backend answers to (backend urls)
       AI_URL: http://momentum-ai
     ports:
       - "8081:80"
+    volumes:
+      - ./exercise.json:/app/exercises.json
 
   momentum-frontend:
     image: ghcr.io/bp-momentum/frontend:latest
@@ -34,5 +36,6 @@ services:
       BACKEND_URL: http://localhost:8081
       WEBSOCKET_URL: ws://localhost:8081
       FRONTEND_URL: http://localhost:8082/#/
+      DEBUG: true
     ports:
       - "8082:80"

@@ -12,6 +12,7 @@ Frontend:
   - WEBSOCKET_URL
   - FRONTEND_URL
   - VIRTUAL_HOST
+  - DEBUG (unset for off or any value for on)
 
 Backend:
   - EMAIL_ADDRESS
