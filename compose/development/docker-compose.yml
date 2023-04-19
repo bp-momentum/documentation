@@ -5,6 +5,9 @@ services:
     image: ghcr.io/bp-momentum/ai:latest
     restart: unless-stopped
     container_name: momentum-ai
+    environment:
+      BACKEND_URL: http://momentum-backend
+      BACKEND_PSK: 1234
 
   momentum-backend:
     image: ghcr.io/bp-momentum/backend:latest
@@ -21,6 +24,7 @@ services:
       ALLOWED_ORIGINS: http://localhost:8082  # CORS (urls that the frontend uses as a referer (frontend urls))
       ALLOWED_HOSTS: 127.0.0.1,localhost,backend.local  # Hosts that the backend answers to (backend urls)
       AI_URL: http://momentum-ai
+      AI_PSK: 1234
     ports:
       - "8081:80"
     volumes:
